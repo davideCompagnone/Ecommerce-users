@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, request
-from users import  UsersManager, initDb
+from users import  UserManager, initDb
 
 
 app = Flask(__name__)
@@ -12,7 +12,13 @@ def manage_users():
     if request.method == 'POST':
         
         #UPDATE Users
-        return jsonify(request.json), 201
+        data = request.json
+        user_id = data['id']
+        name = data['name']
+        email = data['email']
+        usersManager.insert_user(user_id, name, email)
+        return jsonify({"message": "User added successfully"}), 201
+       
     return jsonify(usersManager.get_all_users().to_dict(orient='records'))
 
 
